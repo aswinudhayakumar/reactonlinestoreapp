@@ -1,0 +1,59 @@
+.ren{
+    margin-left: 25px;
+    margin-bottom: 35px;
+    padding: 25px;
+    text-align: left;
+    margin-right: 50px;
+    border-radius: 5px;
+    transition: 0.2s ease-in-out;
+    background: white;
+    box-shadow: 3px 3px 5px 6px silver;
+}
+.ren:hover{
+    box-shadow: 3px 3px 5px 6px gray;
+}
+#nodata{
+    text-align: left;
+}
+.head{
+    text-align: left;
+    margin-bottom: 20px;
+}
+.ind_image{
+    overflow: hidden;
+    padding: 5px;
+}
+.linkbtn{
+    text-align: left;
+}
+.header{
+    margin-left: -10px;
+}
+.card-body{
+    padding: 0px;
+}
+p{
+    margin: 0px;
+}
+.strike{
+    color:red;
+}
+.doff{
+    background: #1B9CFC;
+    color: white;
+    padding:2px;
+    padding-left: 15px;
+    border-radius: 15px;
+    font-size: 15px;
+}
+.sbtn{
+    background: #ffeb6a;
+    color: black;
+    border: none;
+    transition: 0.2s ease-in-out;
+}
+.sbtn:hover{
+    background: #f5db35;
+    color: black;
+    border: none;
+}

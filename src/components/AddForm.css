@@ -1,0 +1,58 @@
+.addform{
+    margin : 15px;
+    text-align: left;
+    margin-left: 25px;
+    margin-top: 10px;
+}
+.newform{
+    margin-bottom: 25px;
+}
+.btnn{
+    margin-right: 15px;
+}
+#up{
+    margin-top: 10px;
+}
+#ap{
+    margin-top: 10px;
+}
+.add{
+    margin-left: 15px;
+}
+.picture{
+   display: none;
+}
+.custom-file-upload{
+    padding: 10px;
+    margin-top: 10px;
+    background: rgb(150, 189, 240);
+    border-radius: 5px;
+    transition: 0.2s ease-in-out;
+}
+.custom-file-upload:hover{
+
+    background: rgb(118, 158, 211);
+
+}
+.price{
+    background: white;
+    border-radius: 5px;
+    padding:7px;
+    padding-left: 15px;
+    padding-right: 15px;
+    overflow: hidden;
+}
+.selectedimage{
+    margin-left: 50px;
+}
+.sbtn{
+    background: #ffeb6a;
+    color: black;
+    border: none;
+    transition: 0.2s ease-in-out;
+}
+.sbtn:hover{
+    background: #f5db35;
+    color: black;
+    border: none;
+}

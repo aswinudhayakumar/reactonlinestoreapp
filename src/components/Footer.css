@@ -1,0 +1,14 @@
+.foot{
+    text-align: left;
+}
+.final{
+    text-align: center;
+}
+.total{
+    background: rgb(9, 181, 224);
+    padding: 30px;
+    margin: 50px;
+    margin-bottom: 0px;
+    margin-top: 15px;
+    margin-left: 0px;
+}

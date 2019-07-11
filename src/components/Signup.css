@@ -1,0 +1,24 @@
+.signupbtn{
+    margin-top: 15px;
+}
+#sel, #buy{
+    position: relative;
+    top:-25px;
+}
+.rad{
+    margin-top: 5px;
+    margin-bottom: -10px;
+}
+.signup-content{
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.notice{
+    margin-top: 20px;
+}
+.signin-link{
+    margin-top: 100px;
+}
+.error{
+    color: red;
+}

@@ -1,14 +1,12 @@
 .navigation{
-    background: /*#ff5e57 #786fa6*/rgb(9, 181, 224);
-    color: white;
+    background: /*#ff5e57 #786fa6rgb(9, 181, 224) #dfe6e9*/#b2bec3;
     width: 100%;
-    margin: 15px;
     margin-top : 5px;
     margin-bottom: 0px;
     border-radius: 5px;
 }
-.white{
-    color: white;
+.search{
+    width: 200px;
 }
 .sbtn{
     background: #ffeb6a;
@@ -20,4 +18,16 @@
     background: #f5db35;
     color: black;
     border: none;
+}
+.navbar-brand{
+    color: black;
+}
+.ss{
+    margin-left: 5px;
+}
+.greet{
+    margin-top: 3px;
+}
+.sign{
+    margin-left: 5px;
 }

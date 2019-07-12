@@ -30,6 +30,7 @@ class Signin extends Component {
         console.log(link)
         axios.post(link).then(res => {
             localStorage.setItem("webtoken", res.data)
+
             window.location.replace("http://localhost:3000")
         }
         )
@@ -38,7 +39,7 @@ class Signin extends Component {
   
 
     render() {
-        if(localStorage.getItem("webtoken") !== null){
+        if(localStorage.getItem("webtoken") !== null ){
             return( 
                     <Redirect path="/" />         
             )

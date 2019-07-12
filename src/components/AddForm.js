@@ -21,8 +21,8 @@ class AddForm extends Component {
       mrp: '',
       size: '',
       discount: '',
-      decode : {},
-      isauth : false,
+      decode : '',
+      isauth : null,
       products: [],
       error: {
         size: '',
@@ -77,10 +77,26 @@ class AddForm extends Component {
       var decoded = jwt_decode(jwt)
       this.setState({
           decode : decoded,
-          isauth : true
+          isauth : decoded.Account
       })
     }
+    else{
+      this.setState({
+        decode : null,
+    })
+    }
 
+  }
+
+  componentWillMount(){
+    var jwt = localStorage.getItem("webtoken");
+    if (jwt !== null){
+      var decoded = jwt_decode(jwt)
+      this.setState({
+          decode : decoded,
+          isauth : decoded.Account
+      })
+    }
   }
 
   add = () => {
@@ -160,10 +176,6 @@ class AddForm extends Component {
 
   }
 
-  componentDidUpdate(){
-    console.log(this.state);
-  }
-
 
   render() {
     if(localStorage.getItem("webtoken") === null || this.state.decode.Account !== 'Seller'){
@@ -171,7 +183,7 @@ class AddForm extends Component {
               <Redirect path="/" />         
       )
     }
-    console.log("hi " + this.props.showorhide);
+    console.log("hi " + this.state.decode.Account);
     return (
       <div>
         <Carousal />

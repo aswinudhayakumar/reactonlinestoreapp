@@ -43,6 +43,7 @@ class Navigation extends Component {
 
   signout = () => {
     localStorage.removeItem("webtoken");
+    localStorage.removeItem("bos");
     this.setState({
       decode: null,
       user: null,
@@ -67,7 +68,7 @@ class Navigation extends Component {
             </Form>
           </Navbar> */}
         <nav className="navbar navbar-expand-md navigation">
-          <Link className="link" to="/"><a className="navbar-brand">OnlineStore</a></Link>
+          <Link className="link" to="/"><p className="navbar-brand">OnlineStore</p></Link>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span className="navbar-toggler-icon navbar-dark"></span>
           </button>
@@ -81,7 +82,7 @@ class Navigation extends Component {
               </li>
             </ul>
             <div className="my-2 my-lg-0">
-              <div className="greet">{this.state.isauth === true ? <span>{this.state.decode.Account === 'Buyer' ? <span><img src={fav} height="25px" width="25px" alt="" /> <img src={cart} height="25px" width="25px" alt="" /></span> : ''} Hello,  {this.state.user}<button onClick={this.signout.bind(this)} className="btn btn-primary sign">Signout</button></span> : <span>Hello, Guest<Link className="link" to="/signin"><button className="sign btn btn-primary">Signin</button></Link></span>}  </div>
+              <div className="greet">{this.state.isauth === true ? <span>{this.state.decode.Account === 'Buyer' ? <span><Link className="link" to="/fav"><img src={fav} height="25px" width="25px" alt="" /></Link> <Link className="link" to="/Cart"><img src={cart} height="25px" width="25px" alt="" /></Link></span> : ''} Hello,  {this.state.user}<button onClick={this.signout.bind(this)} className="btn btn-primary sign">Signout</button></span> : <span>Hello, Guest<Link className="link" to="/signin"><button className="sign btn btn-primary">Signin</button></Link></span>}  </div>
             </div>
           </div>
         </nav>

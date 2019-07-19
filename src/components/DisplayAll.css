@@ -60,3 +60,12 @@ p{
 .love{
     margin-top: 7px;
 }
+.display-trans{
+    transition: 0.2s ease-in-out;
+}
+#ctext{
+    margin-left: 25px;
+}
+.skeleton{
+    height: 300px;
+}

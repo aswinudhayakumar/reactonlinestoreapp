@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import './DisplayAll.css'
 import './Pants.css'
 import Sidenav from '../components/Sidenav'
+import pant from '../pant.jpg'
 import Carousal from '../components/Carousal'
 import love from '../love.png'
 import love1 from '../love1.png'
 import axios from 'axios';
 import jwt_decode from 'jwt-decode'
+import { Redirect } from 'react-router-dom'
+import Skeleton from 'react-loading-skeleton';
 
 class Pants extends Component {
 
@@ -39,16 +42,13 @@ class Pants extends Component {
         var link1 = "http://localhost:8123/products"
         axios.get(link1).then(res => {
             this.setState({ products: res.data !== null ? res.data : [] });
-            console.log(this.state.products)
         })
         var link = "http://localhost:8123/getcart/" + this.state.decode.Userid
-        console.log(link)
         axios.post(link).then(res => {
             this.setState({ cart: res.data !== null ? res.data : [] });
 
         })
-        var link = "http://localhost:8123/getfav/" + this.state.decode.Userid
-        console.log(link)
+        link = "http://localhost:8123/getfav/" + this.state.decode.Userid
         axios.post(link).then(res => {
             this.setState({ fav: res.data !== null ? res.data : [] });
 
@@ -57,33 +57,76 @@ class Pants extends Component {
         /* this.setState({ products: localStorage.getItem("data") !== null ? JSON.parse(localStorage.getItem("data")) : [] }); */
     }
 
-    addfav = (e, a) => {
-        var link1 = "http://localhost:8123/addtofav/" + this.state.decode.Userid + "/" + a
-        axios.post(link1).then(res => {
-            console.log("successfully added")
-        })
-        window.location.replace("http://localhost:3000")
-    }
-
-
     addcart = (e, a) => {
         var link1 = "http://localhost:8123/addtocart/" + this.state.decode.Userid + "/" + a
         axios.post(link1).then(res => {
             console.log("successfully added")
         })
-        window.location.replace("http://localhost:3000")
+
+        var link = "http://localhost:8123/getcart/" + this.state.decode.Userid
+        axios.post(link).then(res => {
+            this.setState({ cart: res.data !== null ? res.data : [] });
+
+        })
+    }
+
+    addfav = (e, a) => {
+        var link1 = "http://localhost:8123/addtofav/" + this.state.decode.Userid + "/" + a
+        axios.post(link1).then(res => {
+            console.log("successfully added")
+        })
+
+
+        var link = "http://localhost:8123/getfav/" + this.state.decode.Userid
+        axios.post(link).then(res => {
+            this.setState({ fav: res.data !== null ? res.data : [] });
+
+        })
+
+    }
+
+    delfav = (e, a) => {
+        var link1 = "http://localhost:8123/delfav/" + this.state.decode.Userid + "/" + a
+        axios.post(link1).then(res => {
+            console.log("successfully deleted")
+        })
+
+        var link = "http://localhost:8123/getfav/" + this.state.decode.Userid
+        axios.post(link).then(res => {
+            this.setState({ fav: res.data !== null ? res.data : [] });
+        })
+
+    }
+
+    deleteproduct = (e, a, b) => {
+        var link1 = "http://localhost:8123/deleteproduct/" + a + "/" + b
+        axios.post(link1).then(res => {
+            console.log("successfully deleted")
+        })
+
+
+        link1 = "http://localhost:8123/products"
+        axios.get(link1).then(res => {
+            this.setState({ products: res.data !== null ? res.data : [] });
+        })
     }
 
 
 
     render() {
+        if (this.state.decode.Account === 'Admin') {
+            return (
+                <Redirect path="/Admin" />
+            )
+        }
         var value = 0;
         if (this.state.decode.Account === 'Seller') {
             var display = <div>
-                <h2 className="head">Now showing Pants</h2>
+                <h2 className="head"> <img src={pant} height="80px" width="60px" alt="" /> Now showing Pants</h2>
                 <div className="row">
                     {
                         this.state.products.map((data, i) => {
+                            var link = "http://localhost:8123/temp-images/" + data.Image
                             return (
                                 data.Sellerid === this.state.decode.Userid ?
                                     data.Category === 'Pant' ?
@@ -94,7 +137,7 @@ class Pants extends Component {
                                             </div>
 
                                             <div className="ind_image">
-                                                <img src={/* data.image !== 'null'? data.image :*/ love} alt="" height="160" width="170" />
+                                                <img src={data.image !== 'null' ? link : love} alt="" height="160" width="170" />
                                             </div>
                                             <div className="card-body">
                                                 <b className="name"><center>{data.Name}</center></b>
@@ -115,11 +158,12 @@ class Pants extends Component {
             </div>
         }
         else if (this.state.decode.Account === 'Buyer') {
-            var display = <div>
-                <h2 className="head">Now showing Pants</h2>
+            display = <div>
+                <h2 className="head"><img src={pant} height="80px" width="60px" alt="" /> Now showing Pants</h2>
                 <div className="row">
                     {
                         this.state.products.map((data, i) => {
+                            var link = "http://localhost:8123/temp-images/" + data.Image
                             var d = 0;
                             var f = 0;
                             return (
@@ -131,7 +175,7 @@ class Pants extends Component {
                                         </div>
 
                                         <div className="ind_image">
-                                            <img src={/* data.image !== 'null'? data.image :*/ love} alt="" height="160" width="170" />
+                                            <img src={data.image !== 'null' ? link : love} alt="" height="160" width="170" />
                                         </div>
                                         <div className="card-body">
                                             <b className="name"><center>{data.Name}</center></b>
@@ -139,24 +183,22 @@ class Pants extends Component {
                                             <div className="row">
                                                 {
                                                     this.state.fav.map((data1, j) => {
-                                                        console.log(data.ID, data1.ID)
                                                         if (data.ID === data1.ID) {
-                                                            console.log("suc")
                                                             f = 1
                                                         }
+                                                        return ''
                                                     })
                                                 }
 
-                                                {f === 1 ? <img src={love} className="love" alt="" height="25px" width="25px" /> : <img src={love1} onClick={(e => this.addfav(e, data.ID))} className="love" alt="" height="25px" width="25px" />}
+                                                {f === 1 ? <img src={love} onClick={(e => this.delfav(e, data.ID))} className="love" alt="" height="25px" width="25px" /> : <img src={love1} onClick={(e => this.addfav(e, data.ID))} className="love" alt="" height="25px" width="25px" />}
                                                 <div className="col-md-4"><button className="btn btn-primary">Buy</button></div>
                                                 <div className="col-md-6">
                                                     {
                                                         this.state.cart.map((data1, j) => {
-                                                            console.log(data.ID, data1.ID)
                                                             if (data.ID === data1.ID) {
-                                                                console.log("suc")
                                                                 d = 1
                                                             }
+                                                            return ''
                                                         })
                                                     }
 
@@ -175,11 +217,12 @@ class Pants extends Component {
             </div>
         }
         else {
-            var display = <div>
-                <h2 className="head">Now showing Pants</h2>
+            display = <div>
+                <h2 className="head"><img src={pant} height="80px" width="60px" alt="" /> Now showing Pants</h2>
                 <div className="row">
                     {
                         this.state.products.map((data, i) => {
+                            var link = "http://localhost:8123/temp-images/" + data.Image
                             return (
                                 data.Category === 'Pant' ?
                                     <div className="col-md-3 ren" key={i}>
@@ -189,7 +232,7 @@ class Pants extends Component {
                                         </div>
 
                                         <div className="ind_image">
-                                            <img src={/* data.image !== 'null'? data.image :*/ love} alt="" height="160" width="170" />
+                                            <img src={data.image !== 'null' ? link : love} alt="" height="160" width="170" />
                                         </div>
                                         <div className="card-body">
                                             <b className="name"><center>{data.Name}</center></b>
@@ -221,16 +264,21 @@ class Pants extends Component {
 
                             {
                                 this.state.products.map((data) => {
-                                    console.log(value)
                                     this.state.decode.Account === 'Seller' ?
-                                        data.Category === 'Pant' && data.Sellerid === this.state.decode.Userid ? value = 1 : console.log("no") :
-                                        data.Category === 'Pant' ? value = 1 : console.log("no")
-                                    return (console.log("done"))
+                                        data.Category === 'Pant' && data.Sellerid === this.state.decode.Userid ? value = 1 : console.log('') :
+                                        data.Category === 'Pant' ? value = 1 : console.log('')
+                                    return ('')
 
                                 })
                             }
-                            {console.log(value)}
-                            {value === 1 ? display : <h2 id="nodata">No Products Found</h2>}
+                            {value === 1 ? display :
+                                // <h2 id="nodata">No Products Found</h2>
+                                <div className="row">
+                                    <div className="col-md-3 ren skeleton"><Skeleton count={10} /></div>
+                                    <div className="col-md-3 ren skeleton"><Skeleton count={10} /></div>
+                                    <div className="col-md-3 ren skeleton"><Skeleton count={10} /></div>
+                                </div>
+                            }
 
                         </div>
                     </div>

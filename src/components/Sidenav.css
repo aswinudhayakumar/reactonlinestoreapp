@@ -69,3 +69,7 @@ ul{
     text-align: left;
     margin-bottom: 20px;
 }
+.round{
+    border-radius: 50%;
+    margin-right: 15px;
+}

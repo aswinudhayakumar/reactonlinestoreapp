@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import './AddForm.css';
 import love from '../love.png'
 import Sidenav from '../components/Sidenav'
@@ -21,15 +21,16 @@ class AddForm extends Component {
       mrp: '',
       size: '',
       discount: '',
-      decode : '',
-      isauth : null,
+      decode: '',
+      isauth: null,
       products: [],
       error: {
         size: '',
         mrp: '',
         discount: '',
         image: '',
-      }
+      },
+      myform: ''
     }
 
     this.displayForm = this.displayForm.bind(this);
@@ -43,7 +44,7 @@ class AddForm extends Component {
       [event.target.name]: event.target.value
     })
 
-    if(event.target.name === 'mrp' || event.target.name === 'discount'){
+    if (event.target.name === 'mrp' || event.target.name === 'discount') {
       this.calculate();
     }
   }
@@ -73,51 +74,49 @@ class AddForm extends Component {
     this.setState({ products: localStorage.getItem("data") !== null ? JSON.parse(localStorage.getItem("data")) : [] });
 
     var jwt = localStorage.getItem("webtoken");
-    if (jwt !== null){
+    if (jwt !== null) {
       var decoded = jwt_decode(jwt)
       this.setState({
-          decode : decoded,
-          isauth : decoded.Account
+        decode: decoded,
+        isauth: decoded.Account
       })
     }
-    else{
+    else {
       this.setState({
-        decode : null,
-    })
+        decode: null,
+      })
     }
 
   }
 
-  componentWillMount(){
+  componentWillMount() {
     var jwt = localStorage.getItem("webtoken");
-    if (jwt !== null){
+    if (jwt !== null) {
       var decoded = jwt_decode(jwt)
       this.setState({
-          decode : decoded,
-          isauth : decoded.Account
+        decode: decoded,
+        isauth: decoded.Account
       })
     }
   }
 
   add = () => {
 
-    console.log('hello add');
     var category = this.state.category;
     var mrp = this.state.mrp;
     var name = this.state.pname;
     var discount = this.state.discount;
     var ap = this.state.actual_price;
     /*var products = this.state.products;*/
-    var image = this.state.img;
+    var image = localStorage.getItem("lastimgupload");
 
     if (category !== '' && mrp !== '' && name !== '' && discount !== '' && ap !== '' && image !== 'null') {
-      
 
-      var link = "http://localhost:8123/addproduct/"+this.state.category+"/"+this.state.pname+"/"+this.state.mrp+"/"+this.state.size+"/"+this.state.discount+"/"+this.state.actual_price+"/"+this.state.decode.Userid
-      console.log(link)
+
+      var link = "http://localhost:8123/addproduct/" + this.state.category + "/" + this.state.pname + "/" + this.state.mrp + "/" + this.state.size + "/" + this.state.discount + "/" + this.state.actual_price + "/" + this.state.decode.Userid +"/"+ image
       axios.post(link).then(res => {
-          alert("Product added successfully")
-          console.log(res)
+        alert("Product added successfully")
+        localStorage.removeItem("lastimgupload")
       })
 
       /*var obj = {
@@ -140,7 +139,6 @@ class AddForm extends Component {
     }
     else {
       alert("Fill out all fields and upload only images");
-      console.log('null values');
     }
   }
 
@@ -149,14 +147,12 @@ class AddForm extends Component {
     this.setState({
       show: 'form'
     })
-    console.log(this.state.show);
   }
 
   hideForm() {
     this.setState({
       show: 'null'
     })
-    console.log(this.state.show);
   }
 
   calculate() {
@@ -176,14 +172,44 @@ class AddForm extends Component {
 
   }
 
+  uploadimage = (e) => {
+    e.preventDefault()
+    const fm = new FormData()
+    fm.append("myform", this.state.myform)
+
+    var fileName = document.getElementById("picture").value;
+    var idxDot = fileName.lastIndexOf(".") + 1;
+    var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+    if (extFile === "jpg" || extFile === "jpeg" || extFile === "png") {
+
+      axios.post("http://localhost:8123/upload", fm).then(res => {
+        var d = res.data
+        var l = d.slice(12)
+        localStorage.setItem("lastimgupload", l)
+      })
+
+      var z;
+
+      const file = this.state.myform;
+      getBase64(file).then(base64 => {
+        z = base64;
+        console.debug("file stored", z);
+        this.setState({
+          img: z
+        })
+      })
+    } else {
+      alert("Only jpg/jpeg and png files are allowed!");
+    }
+  }
+
 
   render() {
-    if(localStorage.getItem("webtoken") === null || this.state.decode.Account !== 'Seller'){
-      return( 
-              <Redirect path="/" />         
+    if (localStorage.getItem("webtoken") === null || this.state.decode.Account !== 'Seller') {
+      return (
+        <Redirect path="/" />
       )
     }
-    console.log("hi " + this.state.decode.Account);
     return (
       <div>
         <Carousal />
@@ -230,11 +256,24 @@ class AddForm extends Component {
                                 <p id="ap">Actual Price <span className="price"> {this.state.actual_price} </span> </p>
                               </div>
                             </div>
-                            <p htmlFor="" id="up">Upload product picture (size of 160 x 170 is recommended)</p>
-                            <label htmlFor="picture" className="custom-file-upload">
-                              Custom Upload
-                    </label>
-                            <input onChange={this.print} type="file" accept="image/x-png,image/gif,image/jpeg" id="picture" className="picture" />
+                            <p htmlFor="" id="up">Upload product picture (size of 160 x 170 is recommended)</p><br/>
+                            <form onSubmit={this.uploadimage}>
+
+                              <div className="row">
+                                <div className="col-md-6">
+                                <label htmlFor="picture" className="custom-file-upload">
+                                Browse image
+                              </label>
+                                <input type="file" name="myform" accept="image/x-png,image/gif,image/jpeg" onChange={(e) => { this.setState({ myform: e.target.files[0] }) }} id="picture" className="picture" />
+                                </div>
+                                <div className="col-md-6">
+                                <button className="btn btn-success" >Preview image</button>
+                                </div>
+                              </div>
+                              
+
+                            </form><br/>
+                            <p>Click upload to see the preview of uploaded image</p><br/>
 
                             <div className="btngrp">
                               <button className="btn btn-success sbtn" onClick={this.add}>Add product</button>

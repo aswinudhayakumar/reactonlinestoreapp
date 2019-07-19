@@ -12,6 +12,8 @@ import Signin from '../components/Signin';
 import Signup from '../components/Signup';
 import Cart from '../components/Cart';
 import Fav from '../components/Fav';
+import Profile from '../components/profile';
+import Admin from '../components/Admin';
 
 class AppRouter extends Component {
     render() {
@@ -29,6 +31,8 @@ class AppRouter extends Component {
                         <Route  path="/signup" component={Signup} />
                         <Route  path="/cart" component={Cart} />
                         <Route  path="/fav" component={Fav} />
+                        <Route  path="/profile" component={Profile} />
+                        <Route  path="/Admin" component={Admin} />
                 </Switch>
             <Footer/>
             </Router>

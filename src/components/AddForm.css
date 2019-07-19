@@ -24,7 +24,8 @@
 }
 .custom-file-upload{
     padding: 10px;
-    margin-top: 10px;
+
+    position: absolute;
     background: rgb(150, 189, 240);
     border-radius: 5px;
     transition: 0.2s ease-in-out;

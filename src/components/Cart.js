@@ -4,7 +4,7 @@ import {  Redirect } from 'react-router-dom'
 import './Cart.css'
 import axios from 'axios';
 import jwt_decode from 'jwt-decode'
-import love from '../love.png'
+import cart from '../cart.png'
 
 class Cart extends Component {
 
@@ -32,14 +32,29 @@ class Cart extends Component {
 
         if(localStorage.getItem("webtoken") !== null){
         var link = "http://localhost:8123/getcart/"+this.state.decode.Userid
-        console.log(link)
         axios.post(link).then(res => {
-            console.log(res.data)
             this.setState({ products: res.data !== null ? res.data : [] });
             
         })
     }
     }
+
+    delcart = (e, a) => {
+        var link1 = "http://localhost:8123/delcart/" + this.state.decode.Userid + "/" + a
+        axios.post(link1).then(res => {
+            console.log("successfully deleted")
+        })
+        alert("Item removed from cart")
+        if(localStorage.getItem("webtoken") !== null){
+            var link = "http://localhost:8123/getcart/"+this.state.decode.Userid
+            axios.post(link).then(res => {
+                this.setState({ products: res.data !== null ? res.data : [] });
+                
+            })
+        }
+
+    }
+
 
 
     render() {
@@ -66,6 +81,7 @@ class Cart extends Component {
                                                     <th>Mrp</th>
                                                     <th>Discount</th>
                                                     <th>Actual price</th>
+                                                    <th>Remove from cart</th>
                                                 </tr>
                         {
                             this.state.products.map((data, i) => {
@@ -82,6 +98,7 @@ class Cart extends Component {
                                                     <td>{data.Mrp}</td>
                                                     <td>{data.Discount}</td>
                                                     <td>{data.Actualprice}</td>
+                                                    <td><button className="btn btn-danger" onClick={(e => this.delcart(e, data.ID))}>Remove</button></td>
                                                 </tr>
                                             </tbody>
                                         /*<div className="col-md-3 ren" key={i}>
@@ -117,7 +134,7 @@ class Cart extends Component {
                         </div>
                         <div className="col-md-8">
                             <div className="cart">
-                            <h3>{this.state.decode.Name}'s Cart</h3><br/>
+                            <h3><img src={cart}  height="120px" width="100px" alt=""/> {this.state.decode.Name}'s Cart</h3><br/>
                                 {this.state.products.length !== 0 ? display : <div><h1 id="nodata">No data Found</h1></div>}<br/>
                                 <div className="gtotal">
                                 <p>Grand Total : {total} <div>&nbsp;</div><button className="btn btn-primary">Checkout</button></p>

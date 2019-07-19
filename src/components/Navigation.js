@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import fav from '../love.png'
 import cart from '../cart.png'
+import user from '../user.png'
 import './Navigation.css'
 import jwt_decode from 'jwt-decode'
 
@@ -82,7 +83,7 @@ class Navigation extends Component {
               </li>
             </ul>
             <div className="my-2 my-lg-0">
-              <div className="greet">{this.state.isauth === true ? <span>{this.state.decode.Account === 'Buyer' ? <span><Link className="link" to="/fav"><img src={fav} height="25px" width="25px" alt="" /></Link> <Link className="link" to="/Cart"><img src={cart} height="25px" width="25px" alt="" /></Link></span> : ''} Hello,  {this.state.user}<button onClick={this.signout.bind(this)} className="btn btn-primary sign">Signout</button></span> : <span>Hello, Guest<Link className="link" to="/signin"><button className="sign btn btn-primary">Signin</button></Link></span>}  </div>
+              <div className="greet"> {this.state.isauth === true ? <span>{this.state.decode.Account === 'Buyer' ? <span><Link className="link" to="/fav"><img src={fav} height="25px" className="favimg" width="25px" alt="" /></Link> <Link className="link" to="/Cart"><img src={cart} className="favimg" height="25px" width="25px" alt="" /></Link></span> : ''} <Link className="link" to="/profile"> <img src={user} className="favimg" className="user" alt=""/>  Hello,  {this.state.user}</Link></span> : <span><img src={user} className="user" alt=""/>  Hello, Guest<Link className="link" to="/signin"><button className="sign btn btn-primary">Signin</button></Link></span>}  </div>
             </div>
           </div>
         </nav>

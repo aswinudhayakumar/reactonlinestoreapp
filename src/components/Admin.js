@@ -109,6 +109,7 @@ class Admin extends Component {
                 <Redirect path="/" />
             )
         }
+        console.log(this.state)
         var s = 0
         var b = 0
         return (
@@ -124,7 +125,7 @@ class Admin extends Component {
                             </div>
                             <br />
                             <div>
-                                <div> <h5>Product with Highest No.of.qunatity in cart : {this.state.hcartproductid}</h5> </div>
+                                <div> <h5>Product ID with Highest No.of.qunatity in cart : {this.state.hcartproductid}</h5> </div>
                                 <div> <h5>Quantity: {this.state.hcartproductvalue}</h5> </div>
                             </div>
                         </div>

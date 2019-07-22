@@ -38,6 +38,8 @@ class DisplayAll extends Component {
                 isauth: decoded.Account
             })
         }
+
+        
     }
 
 
@@ -45,17 +47,18 @@ class DisplayAll extends Component {
         var link1 = "http://localhost:8123/products"
         axios.get(link1).then(res => {
             this.setState({ products: res.data !== null ? res.data : [] });
+            var link = "http://localhost:8123/getcart/" + this.state.decode.Userid
+            axios.post(link).then(res => {
+                this.setState({ cart: res.data !== null ? res.data : [] });
+                link = "http://localhost:8123/getfav/" + this.state.decode.Userid
+                axios.post(link).then(res => {
+                    this.setState({ fav: res.data !== null ? res.data : [] });
+        
+                })
+            })
         })
-        var link = "http://localhost:8123/getcart/" + this.state.decode.Userid
-        axios.post(link).then(res => {
-            this.setState({ cart: res.data !== null ? res.data : [] });
 
-        })
-        link = "http://localhost:8123/getfav/" + this.state.decode.Userid
-        axios.post(link).then(res => {
-            this.setState({ fav: res.data !== null ? res.data : [] });
 
-        })
 
         /* this.setState({ products: localStorage.getItem("data") !== null ? JSON.parse(localStorage.getItem("data")) : [] }); */
     }
@@ -64,57 +67,77 @@ class DisplayAll extends Component {
     addcart = (e, a) => {
         var link1 = "http://localhost:8123/addtocart/" + this.state.decode.Userid + "/" + a
         axios.post(link1).then(res => {
-            console.log("successfully added")
+                var link = "http://localhost:8123/getcart/" + this.state.decode.Userid
+                console.log("add cart")
+                axios.post(link).then(res => {
+                    this.setState({ cart: res.data !== null ? res.data : [] });
+        
+                })
+
         })
 
-        var link = "http://localhost:8123/getcart/" + this.state.decode.Userid
-        console.log("add cart")
-        axios.post(link).then(res => {
-            this.setState({ cart: res.data !== null ? res.data : [] });
+        // var link = "http://localhost:8123/getcart/" + this.state.decode.Userid
+        // console.log("add cart")
+        // axios.post(link).then(res => {
+        //     this.setState({ cart: res.data !== null ? res.data : [] });
 
-        })
+        // })
     }
 
     addfav = (e, a) => {
         var link1 = "http://localhost:8123/addtofav/" + this.state.decode.Userid + "/" + a
         axios.post(link1).then(res => {
+            var link = "http://localhost:8123/getfav/" + this.state.decode.Userid
+            axios.post(link).then(res => {
+                this.setState({ fav: res.data !== null ? res.data : [] });
+    
+            })
             console.log("successfully added")
         })
 
-        var link = "http://localhost:8123/getfav/" + this.state.decode.Userid
-        console.log("add fav")
-        axios.post(link).then(res => {
-            this.setState({ fav: res.data !== null ? res.data : [] });
+        // var link = "http://localhost:8123/getfav/" + this.state.decode.Userid
+        // console.log("add fav")
+        // axios.post(link).then(res => {
+        //     this.setState({ fav: res.data !== null ? res.data : [] });
 
-        })
+        // })
 
     }
 
     delfav = (e, a) => {
         var link1 = "http://localhost:8123/delfav/" + this.state.decode.Userid + "/" + a
         axios.post(link1).then(res => {
+            var link = "http://localhost:8123/getfav/" + this.state.decode.Userid
+            axios.post(link).then(res => {
+                this.setState({ fav: res.data !== null ? res.data : [] });
+            })
             console.log("successfully deleted")
         })
 
-        var link = "http://localhost:8123/getfav/" + this.state.decode.Userid
-        console.log("asd")
-        axios.post(link).then(res => {
-            this.setState({ fav: res.data !== null ? res.data : [] });
-        })
+        // var link = "http://localhost:8123/getfav/" + this.state.decode.Userid
+        // console.log("asd")
+        // axios.post(link).then(res => {
+        //     this.setState({ fav: res.data !== null ? res.data : [] });
+        // })
 
     }
 
     deleteproduct = (e, a, b) => {
         var link1 = "http://localhost:8123/deleteproduct/" + a + "/" + b
         axios.post(link1).then(res => {
+            var link1 = "http://localhost:8123/products"
+            console.log("asd")
+            axios.get(link1).then(res => {
+                this.setState({ products: res.data !== null ? res.data : [] });
+            })
             console.log("successfully deleted")
         })
 
-        var link1 = "http://localhost:8123/products"
-        console.log("asd")
-        axios.get(link1).then(res => {
-            this.setState({ products: res.data !== null ? res.data : [] });
-        })
+        // var link1 = "http://localhost:8123/products"
+        // console.log("asd")
+        // axios.get(link1).then(res => {
+        //     this.setState({ products: res.data !== null ? res.data : [] });
+        // })
     }
 
     changetext = () => {
@@ -297,9 +320,10 @@ class DisplayAll extends Component {
                                                 className="loader"
                                             /> */}
                                             <div className="row">
-                                                <div className="col-md-3 ren skeleton"><Skeleton count={10} /></div>
-                                                <div className="col-md-3 ren skeleton"><Skeleton count={10}/></div>
-                                                <div className="col-md-3 ren skeleton"><Skeleton count={10} /></div>
+                                            <h4>No Products found</h4><br/>
+                                    {/* <div className="col-md-3 ren skeleton"><Skeleton count={10} /></div>
+                                    <div className="col-md-3 ren skeleton"><Skeleton count={10} /></div>
+                                    <div className="col-md-3 ren skeleton"><Skeleton count={10} /></div> */}
                                             </div>
                                             {this.state.decode.Account === 'Seller' ? <Link className="link splink" to="/add"><Button variant="success" data-toggle="modal" data-target="#exampleModal" className="addbtn sbtn" >Add New</Button></Link> : ''}</div>}
                                     </div>

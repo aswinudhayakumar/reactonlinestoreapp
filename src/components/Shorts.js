@@ -41,72 +41,105 @@ class Shorts extends Component {
         var link1 = "http://localhost:8123/products"
         axios.get(link1).then(res => {
             this.setState({ products: res.data !== null ? res.data : [] });
+            var link = "http://localhost:8123/getcart/" + this.state.decode.Userid
+            axios.post(link).then(res => {
+                this.setState({ cart: res.data !== null ? res.data : [] });
+                link = "http://localhost:8123/getfav/" + this.state.decode.Userid
+                axios.post(link).then(res => {
+                    this.setState({ fav: res.data !== null ? res.data : [] });
+        
+                })
+            })
         })
-        var link = "http://localhost:8123/getcart/" + this.state.decode.Userid
-        axios.post(link).then(res => {
-            this.setState({ cart: res.data !== null ? res.data : [] });
+        // var link1 = "http://localhost:8123/products"
+        // axios.get(link1).then(res => {
+        //     this.setState({ products: res.data !== null ? res.data : [] });
+        // })
+        // var link = "http://localhost:8123/getcart/" + this.state.decode.Userid
+        // axios.post(link).then(res => {
+        //     this.setState({ cart: res.data !== null ? res.data : [] });
 
-        })
-        link = "http://localhost:8123/getfav/" + this.state.decode.Userid
-        axios.post(link).then(res => {
-            this.setState({ fav: res.data !== null ? res.data : [] });
+        // })
+        // link = "http://localhost:8123/getfav/" + this.state.decode.Userid
+        // axios.post(link).then(res => {
+        //     this.setState({ fav: res.data !== null ? res.data : [] });
 
-        })
+        // })
         /* this.setState({ products: localStorage.getItem("data") !== null ? JSON.parse(localStorage.getItem("data")) : [] }); */
     }
 
     addcart = (e, a) => {
         var link1 = "http://localhost:8123/addtocart/" + this.state.decode.Userid + "/" + a
         axios.post(link1).then(res => {
+            var link = "http://localhost:8123/getcart/" + this.state.decode.Userid
+            axios.post(link).then(res => {
+                this.setState({ cart: res.data !== null ? res.data : [] });
+    
+            })
             console.log("successfully added")
         })
 
-        var link = "http://localhost:8123/getcart/" + this.state.decode.Userid
-        axios.post(link).then(res => {
-            this.setState({ cart: res.data !== null ? res.data : [] });
+        // var link = "http://localhost:8123/getcart/" + this.state.decode.Userid
+        // axios.post(link).then(res => {
+        //     this.setState({ cart: res.data !== null ? res.data : [] });
 
-        })
+        // })
     }
 
     addfav = (e, a) => {
         var link1 = "http://localhost:8123/addtofav/" + this.state.decode.Userid + "/" + a
         axios.post(link1).then(res => {
+            var link = "http://localhost:8123/getfav/" + this.state.decode.Userid
+            axios.post(link).then(res => {
+                this.setState({ fav: res.data !== null ? res.data : [] });
+    
+            })
             console.log("successfully added")
         })
 
 
-        var link = "http://localhost:8123/getfav/" + this.state.decode.Userid
-        axios.post(link).then(res => {
-            this.setState({ fav: res.data !== null ? res.data : [] });
+        // var link = "http://localhost:8123/getfav/" + this.state.decode.Userid
+        // axios.post(link).then(res => {
+        //     this.setState({ fav: res.data !== null ? res.data : [] });
 
-        })
+        // })
 
     }
 
     delfav = (e, a) => {
         var link1 = "http://localhost:8123/delfav/" + this.state.decode.Userid + "/" + a
         axios.post(link1).then(res => {
+            var link = "http://localhost:8123/getfav/" + this.state.decode.Userid
+            axios.post(link).then(res => {
+                this.setState({ fav: res.data !== null ? res.data : [] });
+            })
+    
             console.log("successfully deleted")
         })
 
-        var link = "http://localhost:8123/getfav/" + this.state.decode.Userid
-        axios.post(link).then(res => {
-            this.setState({ fav: res.data !== null ? res.data : [] });
-        })
+        // var link = "http://localhost:8123/getfav/" + this.state.decode.Userid
+        // axios.post(link).then(res => {
+        //     this.setState({ fav: res.data !== null ? res.data : [] });
+        // })
 
     }
 
     deleteproduct = (e, a, b) => {
         var link1 = "http://localhost:8123/deleteproduct/" + a + "/" + b
         axios.post(link1).then(res => {
-            console.log("successfully deleted")
-        })
-
 
         link1 = "http://localhost:8123/products"
         axios.get(link1).then(res => {
             this.setState({ products: res.data !== null ? res.data : [] });
         })
+            console.log("successfully deleted")
+        })
+
+
+        // link1 = "http://localhost:8123/products"
+        // axios.get(link1).then(res => {
+        //     this.setState({ products: res.data !== null ? res.data : [] });
+        // })
     }
 
 
@@ -272,9 +305,10 @@ class Shorts extends Component {
                             {value === 1 ? display :
                                 // <h2 id="nodata">No Products Found</h2>
                                 <div className="row">
+                                    <h4>No Products found</h4><br/>
+                                    {/* <div className="col-md-3 ren skeleton"><Skeleton count={10} /></div>
                                     <div className="col-md-3 ren skeleton"><Skeleton count={10} /></div>
-                                    <div className="col-md-3 ren skeleton"><Skeleton count={10} /></div>
-                                    <div className="col-md-3 ren skeleton"><Skeleton count={10} /></div>
+                                    <div className="col-md-3 ren skeleton"><Skeleton count={10} /></div> */}
                                 </div>
                             }
 

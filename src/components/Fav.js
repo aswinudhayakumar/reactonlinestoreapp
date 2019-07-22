@@ -36,45 +36,55 @@ class Fav extends Component {
         var link = "http://localhost:8123/getfav/"+this.state.decode.Userid
         axios.post(link).then(res => {
             this.setState({ products: res.data !== null ? res.data : [] });
-            
+            link = "http://localhost:8123/getcart/" + this.state.decode.Userid
+            axios.post(link).then(res => {
+                this.setState({ cart: res.data !== null ? res.data : [] });
+        
+            })
         })
     }
-
-    link = "http://localhost:8123/getcart/" + this.state.decode.Userid
-    axios.post(link).then(res => {
-        this.setState({ cart: res.data !== null ? res.data : [] });
-
-    })
 
     }
 
     delfav = (e, a) => {
         var link1 = "http://localhost:8123/delfav/" + this.state.decode.Userid + "/" + a
         axios.post(link1).then(res => {
+            if(localStorage.getItem("webtoken") !== null){
+                var link = "http://localhost:8123/getfav/"+this.state.decode.Userid
+                axios.post(link).then(res => {
+                    this.setState({ products: res.data !== null ? res.data : [] });
+                    
+                })
+            }
             console.log("successfully deleted")
         })
 
-        if(localStorage.getItem("webtoken") !== null){
-            var link = "http://localhost:8123/getfav/"+this.state.decode.Userid
-            axios.post(link).then(res => {
-                this.setState({ products: res.data !== null ? res.data : [] });
+        // if(localStorage.getItem("webtoken") !== null){
+        //     var link = "http://localhost:8123/getfav/"+this.state.decode.Userid
+        //     axios.post(link).then(res => {
+        //         this.setState({ products: res.data !== null ? res.data : [] });
                 
-            })
-        }
+        //     })
+        // }
 
     }
 
     addcart = (e, a) => {
         var link1 = "http://localhost:8123/addtocart/" + this.state.decode.Userid + "/" + a
         axios.post(link1).then(res => {
+            var link = "http://localhost:8123/getcart/" + this.state.decode.Userid
+            axios.post(link).then(res => {
+                this.setState({ cart: res.data !== null ? res.data : [] });
+    
+            })
             console.log("successfully added")
         })
         
-        var link = "http://localhost:8123/getcart/" + this.state.decode.Userid
-        axios.post(link).then(res => {
-            this.setState({ cart: res.data !== null ? res.data : [] });
+        // var link = "http://localhost:8123/getcart/" + this.state.decode.Userid
+        // axios.post(link).then(res => {
+        //     this.setState({ cart: res.data !== null ? res.data : [] });
 
-        })
+        // })
     }
 
 

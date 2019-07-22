@@ -42,16 +42,23 @@ class Cart extends Component {
     delcart = (e, a) => {
         var link1 = "http://localhost:8123/delcart/" + this.state.decode.Userid + "/" + a
         axios.post(link1).then(res => {
+            if(localStorage.getItem("webtoken") !== null){
+                var link = "http://localhost:8123/getcart/"+this.state.decode.Userid
+                axios.post(link).then(res => {
+                    this.setState({ products: res.data !== null ? res.data : [] });
+                    
+                })
+            }
             console.log("successfully deleted")
         })
-        alert("Item removed from cart")
-        if(localStorage.getItem("webtoken") !== null){
-            var link = "http://localhost:8123/getcart/"+this.state.decode.Userid
-            axios.post(link).then(res => {
-                this.setState({ products: res.data !== null ? res.data : [] });
+        // alert("Item removed from cart")
+        // if(localStorage.getItem("webtoken") !== null){
+        //     var link = "http://localhost:8123/getcart/"+this.state.decode.Userid
+        //     axios.post(link).then(res => {
+        //         this.setState({ products: res.data !== null ? res.data : [] });
                 
-            })
-        }
+        //     })
+        // }
 
     }
 

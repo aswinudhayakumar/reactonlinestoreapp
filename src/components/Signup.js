@@ -75,6 +75,7 @@ class Signup extends Component {
                     alert("Account already found")
                 }
                 else{
+                    window.location.replace("http://localhost:3000/signin")
                     alert("New user created")
                 }
             })
